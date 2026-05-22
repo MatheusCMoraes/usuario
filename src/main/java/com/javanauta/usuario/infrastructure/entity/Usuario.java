@@ -17,9 +17,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
 
 @Entity
 @Table(name = "usuario")
+@Builder
 public class Usuario implements UserDetails{
 
 	/**
@@ -83,15 +85,11 @@ public class Usuario implements UserDetails{
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
 
-	public List<Endereco> getEndereços() {
+	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
 

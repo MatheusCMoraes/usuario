@@ -1,0 +1,119 @@
+package com.javanauta.usuario.business.converter;
+
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import com.javanauta.usuario.business.dto.EnderecoDTO;
+import com.javanauta.usuario.business.dto.TelefoneDTO;
+import com.javanauta.usuario.business.dto.UsuarioDTO;
+import com.javanauta.usuario.infrastructure.entity.Endereco;
+import com.javanauta.usuario.infrastructure.entity.Telefone;
+import com.javanauta.usuario.infrastructure.entity.Usuario;
+
+@Component
+public class UsuarioConverter {
+
+	public Usuario paraUsuario(UsuarioDTO usuarioDTO) {
+		
+		Usuario usuario = new Usuario();
+		
+		usuario.setNome(usuarioDTO.getNome());
+		usuario.setEmail(usuarioDTO.getEmail());
+		usuario.setSenha(usuarioDTO.getSenha());
+		usuario.setEndereços(paraListaEndereco(usuarioDTO.getEnderecos()));
+		usuario.setTelefones(paraListaTelefone(usuarioDTO.getTelefones()));
+	
+		
+		return usuario;
+		
+	}
+	
+	
+	public List<Endereco> paraListaEndereco(List<EnderecoDTO> enderecoDTOS){
+		
+		return enderecoDTOS.stream().map(this::paraEndereco).toList();
+		
+	}
+	
+	public Endereco paraEndereco(EnderecoDTO enderecoDTO) {
+		
+		Endereco endereco = new Endereco();
+		
+		endereco.setRua(enderecoDTO.getRua());
+		endereco.setNumero(enderecoDTO.getNumero());
+		endereco.setCidade(enderecoDTO.getCidade());
+		endereco.setComplemento(enderecoDTO.getComplemento());
+		endereco.setCep(enderecoDTO.getCep());
+		endereco.setEstado(enderecoDTO.getEstado());
+		
+		return endereco;
+	}
+	
+	public List<Telefone> paraListaTelefone(List<TelefoneDTO> telefoneDTOS){
+		
+		return telefoneDTOS.stream().map(this::paraTelefone).toList();
+		
+	}
+	
+	public Telefone paraTelefone(TelefoneDTO telefoneDTO) {
+		
+		Telefone telefone = new Telefone();
+		
+		telefone.setNumero(telefoneDTO.getNumero());
+		telefone.setDdd(telefoneDTO.getDdd());
+		
+		return telefone;
+	}
+	
+	// metodos para conversão contrária
+	public UsuarioDTO paraUsuarioDTO(Usuario usuario) {
+		
+		UsuarioDTO usuarioDTO = new UsuarioDTO();
+		
+		usuarioDTO.setNome(usuario.getNome());
+		usuarioDTO.setEmail(usuario.getEmail());
+		usuarioDTO.setSenha(usuario.getPassword());
+		usuarioDTO.setEnderecos(paraListaEnderecoDTO(usuario.getEnderecos()));
+		usuarioDTO.setTelefones(paraListaTelefoneDTO(usuario.getTelefones()));
+	
+		
+		return usuarioDTO;
+		
+	}
+	public List<EnderecoDTO> paraListaEnderecoDTO(List<Endereco> endereco){
+		
+		return endereco.stream().map(this::paraEnderecoDTO).toList();
+		
+	}
+	
+	public EnderecoDTO paraEnderecoDTO(Endereco endereco) {
+		
+		EnderecoDTO enderecoDTO = new EnderecoDTO();
+		
+		enderecoDTO.setRua(endereco.getRua());
+		enderecoDTO.setNumero(endereco.getNumero());
+		enderecoDTO.setCidade(endereco.getCidade());
+		enderecoDTO.setComplemento(endereco.getComplemento());
+		enderecoDTO.setCep(endereco.getCep());
+		enderecoDTO.setEstado(endereco.getEstado());
+		
+		return enderecoDTO;
+	}
+	
+	public List<TelefoneDTO> paraListaTelefoneDTO(List<Telefone> telefone){
+		
+		return telefone.stream().map(this::paraTelefoneDTO).toList();
+		
+	}
+	
+	public TelefoneDTO paraTelefoneDTO(Telefone telefone) {
+		
+		TelefoneDTO telefoneDTO = new TelefoneDTO();
+		
+		telefoneDTO.setNumero(telefone.getNumero());
+		telefoneDTO.setDdd(telefone.getDdd());
+		
+		return telefoneDTO;
+	}
+}
