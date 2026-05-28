@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.javanauta.usuario.business.converter.UsuarioConverter;
 import com.javanauta.usuario.business.dto.UsuarioDTO;
 import com.javanauta.usuario.infrastructure.entity.Usuario;
+import com.javanauta.usuario.infrastructure.exceptions.ResourceNotFoundException;
 import com.javanauta.usuario.infrastructure.repository.UsuarioRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,19 @@ public class UsuarioService {
 		Usuario usuario = usuarioConverter.paraUsuario(usuarioDTO);
 		
 		usuario  = usuarioRepository.save(usuario);
+		
+		return usuarioConverter.paraUsuarioDTO(usuario);
+	}
+	
+	public void deletarUsuarioPorEmail(String email) {
+		usuarioRepository.deleteByEmail(email);
+		
+	}
+	
+	public Usuario buscarUsuarioPorEmail(String email) {
+		return usuarioRepository.findByEmail(email).orElseThrow(
+				() -> new ResourceNotFoundException("Email não encontrado: " + email));
+		
 	}
 	
 }
